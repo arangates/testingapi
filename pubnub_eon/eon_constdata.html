@@ -1,7 +1,7 @@
 <html>
 <head>
     <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/0.0.10/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/0.0.10/eon.css" />
+    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/0.0.10/eon.css"/>
 </head>
   <body>
     <div id="chart"></div>
@@ -12,46 +12,98 @@
       });
 
 
-     var channel = "c3-spline-history-test";
+     var mychannel = "Kcteee";
 
       eon.chart({
-        channel: Kcteee,
-        history: true,
-        flow: true,
-        pubnub: pubnub,
-        debug: true,
+         pubnub: pubnub,
+        channel: mychannel,
+       // history: true,
+        //flow: true,
+        //pubnub: pubnub,
+        //debug: true,
 
         generate: {
           bindto: '#chart',
           data: {
-            labels: false
+            //labels: false
+        //     columns: 
+        //     ['message.analog[2]']
+        // ,
+            type: 'gauge'
           }
-        },
-
-        transform: function(a) {
-          return {
-            eon: {
-              'speed': a[0],
-              'voltage': a[1],
-              'current': a[2],
-              'temperature': a[3],
-              'goal':a[4],
-            }
-          };
         }
+
+        // transform: function(analog) {
+        //   return {
+        //     eon: {
+        //       'speed': analog[0],
+        //       'voltage': analog[1],
+        //       'current': analog[2],
+        //       'temperature': analog[3],
+        //       'goal':analog[4],
+        //     }
+        //   };
+        // }
       });
 
 </script>
 
     <script>
+    pubnub.subscribe({
+    channel : mychannel,
+    message : function( message, env, channel ){
+
+        // RECEIVED A MESSAGE.
+        var car={
+          "general":
+              {
+                "name":"Ford Figo",
+                "number":"TN 37 AJ 4216",
+                "owner":"bill gates",
+                "fuel":message.analog[0],
+                "km":message.analog[1],
+                "milege":message.analog[2],
+                "runtime":message.analog[3]
+              },
+          "engine":
+              {
+                "load":500,
+                "rpm":2000,  //message.analog[4]
+                "coolant":38
+              },
+          "other":
+              {
+            "data1":"blabla",
+            "data2": 32.87554
+              }
+        };
+        console.log(message.analog[2],message.analog[0],message.analog[1],car.general.name,car.general.number,car.general.fuel,car.general.km,car.general.milege,car.engine.load);
+    },
+    connect : function(){
+        console.log("Connected")
+    },
+    disconnect : function(){
+        console.log("Disconnected")
+    },
+    reconnect : function(){
+        console.log("Reconnected")
+    },
+    error : function(){
+        console.log("Network Error")
+    }
+})
   
-      setInterval(function(){
-        pubnub.publish({
-          channel: channel,
-          message: [23,45,66,99,77
-          ]
-        });
-      }, 1000);
-    </script>
+    //   setInterval(function(){
+    //     pubnub.publish({
+    //       channel: mychannel,
+    //        message: {
+    //   eon: {
+    //     'data': Math.random() * 99
+    //   }
+    // }
+
+    //     });
+    //   }, 1000);
+    </script> 
   </body>
 </html>
