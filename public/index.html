@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Jetpat Intern">
+  <title>Jetpat Intern</title>
+
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#2E3AA1">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Jetpat Intern">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key="></script>
+  <script type = "text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+
+<script type = "text/javascript">
+   $(document).ready(function(){
+    // document.write("Hello, World!");
+
+    console.log("document ready");
+
+   
+  });
+
+
+   
+   
+</script> 
+
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="elements/elements.html">
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles"></style>
+</head>
+
+<body unresolved>
+<style is="custom-style">
+  paper-dialog.colored {
+    border: 2px solid;
+    border-color: var(--paper-green-500);
+    background-color: var(--paper-light-green-50);
+    color: var(--paper-green-500);
+  }
+
+  paper-dialog.size-position {
+    /*position: fixed;*/
+   /* top: inherit;
+    right: auto;*/
+
+  /*  width: 300px;
+    height: 300px;*/
+    overflow: auto;
+  }
+</style>
+ <style>
+  .yellow-button {
+  text-transform: none;
+  color: #eeff41;
+  float: right;
+  padding-top: 0px;
+  padding-bottom: 0px;
+
+  }
+</style>
+  <!-- build:remove -->
+  <span id="browser-sync-binding"></span>
+  <!-- endbuild -->
+
+  <template is="dom-bind" id="app">
+
+    <paper-drawer-panel id="paperDrawerPanel" responsive-width="1800px">
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel drawer fixed>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="menu-name">Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <paper-menu class="app-menu" attr-for-selected="data-route" selected="[[route]]">
+          <a data-route="home" href="{{baseUrl}}">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
+        </paper-menu>
+      </paper-scroll-header-panel>
+
+      <!-- Main Area -->
+      <paper-scroll-header-panel main id="headerPanelMain" >
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar" class="flex">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+
+          <span class="space"></span>
+
+          <!-- Toolbar icons -->
+         <!--  <paper-icon-button icon="refresh"></paper-icon-button>
+          <paper-icon-button icon="search"></paper-icon-button> -->
+
+          <!-- Application name -->
+          <div class="middle middle-container">
+            <div class="app-name">Jetpat Intern</div>
+          </div>
+
+        </paper-toolbar>
+
+        <!-- Main Content -->
+          <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+          <section data-route="home" tabindex="-1">
+          <paper-material elevation="1">
+          <h2>Customer Details</h2>
+            <paper-input label="Customer Name" id="cname" autofocus auto-validate error-message="customer name is required!"  required></paper-input>
+            <paper-input label="Contact person Name" id="ccontact" auto-validate error-message="contact person name is required!" required></paper-input>
+            <paper-textarea label="Remarks" rows="3" id="remarks" cols="50" required></paper-textarea>
+            <br>
+            <!-- <paper-checkbox onmouseover="toast1.open();" checked active="true" >Send current location</paper-checkbox> -->
+            <div id="location" ></div>
+            <paper-toast class="fit-bottom" id="toast1" text="">
+
+            <paper-button onclick="toast1.toggle()" class="yellow-button">OK!</paper-button>
+            </paper-toast>
+
+            <paper-toast class="fit-bottom" id="toastset" text="Username stored successfully !">
+            </paper-toast>
+
+            <paper-button raised style="margin:60px;display:block;" onclick="senddat();">Submit</paper-button>
+
+            <paper-dialog id="dropdownDialog"  class="colored size-position">
+              <h2>Username</h2>
+              
+            </paper-dialog>
+       
+            <paper-dialog id="animated" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop modal>
+              <h2>Enter Username</h2>
+             <paper-input label="username" id="username" name="username" auto-validate error-message="Please enter username!" required></paper-input>
+
+              <div class="buttons">
+    <paper-button dialog-confirm onclick="setlocal();toastset.toggle();cname.focus();" >Enter</paper-button>
+    </div>
+
+          </paper-dialog>
+
+          </paper-material>
+
+<script type="text/javascript">
+var uname;
+var geoFindMe;
+var address;
+function setlocal () {
+ uname=document.getElementById("username").value;
+ localStorage.setItem("username", uname);
+ localStorage.setItem("deviceid", "8csdw3323");
+ uname=localStorage.getItem("username");
+}
+function geoFindMe() {
+  var latlng={};
+  var loc = document.getElementById("location");
+  var geocoder = new google.maps.Geocoder;
+  
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+           latlng.lat=position.coords.latitude;
+           latlng.lng=position.coords.longitude;
+          }, function() 
+          {
+           console.log(latlng);
+              console.log("found you");
+              geocoder.geocode({'location': latlng}, function(results, status) 
+              {
+                  if (status === 'OK')
+                  {
+                      if (results[1])
+                      {
+                        address=results[1].formatted_address;
+                        loc.innerHTML = "<p>Location : "+results[1].formatted_address+"</p>";
+                        document.getElementById("toast1").text="Location : "+results[1].formatted_address;
+                        toast1.open();
+                           
+                      } 
+                      else
+                      {
+                        window.alert('No results found');
+                      }
+                  }
+
+                 else 
+                 {
+                    window.alert('Geocoder failed due to: ' + status);
+                  }
+
+            });
+
+
+          });
+        }
+         else {
+          // Browser doesn't support Geolocation
+          console.log("no support");
+        }
+}
+geoFindMe();
+
+
+function senddat () {
+  var params = {
+    "device_id":"8csdw3323",
+    "app_user_name":"Vignesh",
+    "customer_name":"Guna and Co Retailer",
+    "customer_contact":"Guna",
+    "remarks":"Ok",
+    "user_location":"Indra Nagar, Adyar, Chennai"
+  }
+  console.log('sending data');
+  params.device_id=localStorage.getItem("deviceid");
+  params.app_user_name=localStorage.getItem("username");
+  params.customer_name=document.getElementById("cname").value;
+  params.customer_contact=document.getElementById("ccontact").value;
+  params.remarks=document.getElementById("remarks").value;
+  params.user_location=address;
+  console.log(params);
+
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "http://appdemo.jetpat.com/jetpat/Settings/saveFieldVisitData",
+  "method": "POST",
+  "headers": {
+    "cache-control": "no-cache"
+  },
+  "data": JSON.stringify(params)
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+
+}
+          </script>
+
+          </section>
+          </iron-pages>
+          </div>
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+
+  </template>
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
+
+ 
+
+</body>
+
+</html>
